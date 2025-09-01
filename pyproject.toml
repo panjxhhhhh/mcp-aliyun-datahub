@@ -1,0 +1,10 @@
+[project]
+name = "mcp-aliyun-datahub"
+version = "0.1.0"
+description = "MCP Server based pydatahub for aliyun datahub"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "fastmcp>=2.11.3",
+    "pydatahub>=2.25.0",
+]

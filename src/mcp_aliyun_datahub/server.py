@@ -25,7 +25,7 @@ from fastmcp import FastMCP
 from datahub.core import DataHub
 from datahub.models import BlobRecord
 
-mcp = FastMCP("CalculatorService")
+mcp = FastMCP("AliyunDatahubService")
 
 access_id = os.getenv("ALIBABA_CLOUD_ACCESS_KEY_ID")
 access_key = os.getenv("ALIBABA_CLOUD_ACCESS_KEY_SECRET")

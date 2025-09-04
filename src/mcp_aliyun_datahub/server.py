@@ -17,9 +17,13 @@
 # specific language governing permissions and limitations
 # under the License.
 
-from fastmcp import FastMCP
-from datahub.core import DataHub
 import os
+
+from datahub.utils import type_assert
+from fastmcp import FastMCP
+
+from datahub.core import DataHub
+from datahub.models import BlobRecord
 
 mcp = FastMCP("CalculatorService")
 
@@ -148,7 +152,41 @@ def delete_subscription(region, project_name, topic_name, subscription_id):
     return dh.delete_subscription(project_name, topic_name, subscription_id)
 
 
+# --------------------  datahub pub/sub api  --------------------
+
+
+@mcp.tool()
+@type_assert(str, str, str, str)
+def put_record_to_blob(region, project_name, topic_name, data):
+    dh = init_client(region)
+
+    records = []
+    record = BlobRecord(blob_data=data)
+    records.append(record)
+    return dh.put_records(project_name, topic_name, records)
+
+
+@mcp.tool()
+@type_assert(str, str, str, list)
+def put_records_to_blob(region, project_name, topic_name, datas):
+    dh = init_client(region)
+
+    records = []
+    for data in datas:
+        record = BlobRecord(blob_data=data)
+        records.append(record)
+    return dh.put_records(project_name, topic_name, records)
+
+
+@mcp.tool()
+def get_record_from_blob(region, project_name, topic_name, shard_id, limit_num=10):
+    dh = init_client(region)
+    result = dh.get_blob_records(project_name, topic_name, shard_id, limit_num)
+    return result
+
+
 if __name__ == "__main__":
     mcp.run(transport="stdio")
+
 
 
